@@ -29,12 +29,14 @@ struct NotificationPopover: View {
     var body: some View {
         VStack(spacing: 12) {
             Text("No notifications yet")
+                .font(.headline)
+                .foregroundColor(.secondary)
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(
             PopoverShape()
-                .fill(Color.white)
+                .fill(Color(UIColor.systemBackground))
                 .shadow(color: Color.black.opacity(0.2), radius: 3, x: 0, y: 0)
         )
         .ignoresSafeArea(edges: .bottom)

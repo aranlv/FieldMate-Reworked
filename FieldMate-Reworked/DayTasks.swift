@@ -6,33 +6,100 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct DayTasks: View {
-    let taskList: [TaskEvent] = [
-        .init(title: "Preventif AC", location: "Apple Developer Academy", time: "9:00", isActive: true),
-        .init(title: "Preventif Lift", location: "Apple Developer Academy", time: "11:00", isActive: false),
-        .init(title: "Pintu Utama Rusak", location: "Apple Developer Academy", time: "13:00", isActive: false),
-        .init(title: "Flush Toilet Rusak", location: "Apple Developer Academy", time: "15:00", isActive: false),
-        .init(title: "Penggantian Lampu", location: "Apple Developer Academy", time: "17:00", isActive: false),
-    ]
+    @Environment(\.modelContext) private var modelContext
+    @Query private var taskList: [TaskEvent]
+    
+    let selectedDate: Date
+    
+    var filteredTasks: [TaskEvent] {
+        let calendar = Calendar.current
+        return taskList
+            .filter { calendar.isDate($0.date, inSameDayAs: selectedDate) }
+            .sorted { $0.date < $1.date }
+    }
+    
+    var activeTaskID: UUID? {
+        let now = Date()
+        let tasksToday = taskList.filter {
+            Calendar.current.isDate($0.date, inSameDayAs: selectedDate)
+        }
+        
+        let sortedTasks = tasksToday.sorted { $0.date < $1.date }
+        
+        for i in 0..<sortedTasks.count {
+            let current = sortedTasks[i].date
+            let next = i + 1 < sortedTasks.count ? sortedTasks[i + 1].date : nil
+            
+            if now >= current && (next == nil || now < next!) {
+                return sortedTasks[i].id
+            }
+        }
+        return nil
+    }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            ForEach(taskList.indices, id: \.self) { index in
-                HStack(alignment: .top, spacing: 15) {
-                    VStack {
-                        TimelineIndicator(
-                            isActive: taskList[index].isActive,
-                            showLine: index != taskList.count - 1
-                        )
+        if filteredTasks.isEmpty {
+            GeometryReader { geo in
+                VStack(alignment: .center){
+                    Text("No tasks for this day.")
+                        .font(.headline)
+                        .foregroundColor(.secondary)
+                }
+                .frame(width: geo.size.width, height: geo.size.height - 150)
+            }
+        }
+        else {
+            GeometryReader { geo in
+                ScrollViewReader { proxy in
+                    ZStack {
+                        ScrollView {
+                            VStack (alignment: .leading, spacing: 6) {
+                                ForEach(filteredTasks, id: \.id) { task in
+                                    HStack(alignment: .top, spacing: 15) {
+                                        VStack {
+                                            TimelineIndicator(
+                                                isActive: task.id == activeTaskID,
+                                                showLine: task.id != filteredTasks.last?.id
+                                            )
+                                        }
+                                        TaskCard(event: task,
+                                                 isActive: task.id == activeTaskID)
+                                    }
+                                    .id(task.id) // 👈 make each row identifiable
+                                }
+                            }
+                            .padding()
+                            .frame(height: geo.size.height + CGFloat((filteredTasks.count - 1) * 100), alignment: .top)
+                            .frame(maxHeight: .infinity, alignment: .top)
+//                            .border(Color.gray, width: 0.5)
+                        }
+//                        .mask(
+//                            LinearGradient(
+//                                gradient: Gradient(stops: [
+//                                    .init(color: .black.opacity(0), location: 0),
+//                                    .init(color: .black, location: 0.03),
+//                                    .init(color: .black, location: 0.97),
+//                                    .init(color: .black.opacity(0), location: 1)
+//                                ]),
+//                                startPoint: .top,
+//                                endPoint: .bottom
+//                            )
+//                        )
                     }
-                    TaskCard(event: taskList[index],
-                             isActive: taskList[index].isActive)
+                    .task(id: activeTaskID) {
+                        if let activeID = activeTaskID {
+                            try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
+                            withAnimation {
+                                proxy.scrollTo(activeID, anchor: .top)
+                            }
+                        }
+                    }
                 }
             }
         }
-        .padding()
-        .background(Color.white)
     }
 }
 
@@ -40,26 +107,32 @@ struct TaskCard: View {
     let event: TaskEvent
     let isActive: Bool
     
+    private var timeString: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
+        return formatter.string(from: event.date)
+    }
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
                 Text(event.title)
                     .font(.title2)
                     .bold()
-                    .foregroundColor(event.isActive ? .white : .black)
+                    .foregroundColor(isActive ? .white : .black)
                 Spacer()
-                Text(event.time)
-                    .foregroundColor(event.isActive ? .white : .gray)
+                Text(timeString)
+                    .foregroundColor(isActive ? .white : .gray)
             }
             Text(event.location)
-                .foregroundColor(event.isActive ? .white.opacity(0.8) : .gray)
+                .foregroundColor(isActive ? .white.opacity(0.8) : .gray)
         }
         .padding(.horizontal, 20)
         .padding(.vertical, isActive ? 20 : 0)
         .frame(maxWidth: .infinity)
         .background(
             Group {
-                if event.isActive {
+                if isActive {
                     LinearGradient(
                         stops: [
                             Gradient.Stop(color: Color(red: 0.21, green: 0.38, blue: 0.62), location: 0.00),
@@ -102,7 +175,7 @@ struct TimelineIndicator: View {
             if showLine {
                 Rectangle()
                     .fill(Color.black)
-                    .frame(width: 2, height: isActive ? 100 : 80)
+                    .frame(width: 2, height: isActive ? 100 : 70)
             }
         }
         .frame(width: 20)
@@ -110,5 +183,5 @@ struct TimelineIndicator: View {
 }
 
 #Preview {
-    DayTasks()
+    DayTasks(selectedDate: Date())
 }

@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		41E2BB9F2DCD99DE006D67C8 /* FieldMate-Reworked.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FieldMate-Reworked.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		41E2BB9F2DCD99DE006D67C8 /* FieldMate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FieldMate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -40,7 +40,7 @@
 		41E2BBA02DCD99DE006D67C8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				41E2BB9F2DCD99DE006D67C8 /* FieldMate-Reworked.app */,
+				41E2BB9F2DCD99DE006D67C8 /* FieldMate.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,9 +48,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		41E2BB9E2DCD99DE006D67C8 /* FieldMate-Reworked */ = {
+		41E2BB9E2DCD99DE006D67C8 /* FieldMate */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 41E2BBAA2DCD99DE006D67C8 /* Build configuration list for PBXNativeTarget "FieldMate-Reworked" */;
+			buildConfigurationList = 41E2BBAA2DCD99DE006D67C8 /* Build configuration list for PBXNativeTarget "FieldMate" */;
 			buildPhases = (
 				41E2BB9B2DCD99DE006D67C8 /* Sources */,
 				41E2BB9C2DCD99DE006D67C8 /* Frameworks */,
@@ -63,11 +63,11 @@
 			fileSystemSynchronizedGroups = (
 				41E2BBA12DCD99DE006D67C8 /* FieldMate-Reworked */,
 			);
-			name = "FieldMate-Reworked";
+			name = FieldMate;
 			packageProductDependencies = (
 			);
 			productName = "FieldMate-Reworked";
-			productReference = 41E2BB9F2DCD99DE006D67C8 /* FieldMate-Reworked.app */;
+			productReference = 41E2BB9F2DCD99DE006D67C8 /* FieldMate.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -85,7 +85,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 41E2BB9A2DCD99DE006D67C8 /* Build configuration list for PBXProject "FieldMate-Reworked" */;
+			buildConfigurationList = 41E2BB9A2DCD99DE006D67C8 /* Build configuration list for PBXProject "FieldMate" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -99,7 +99,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				41E2BB9E2DCD99DE006D67C8 /* FieldMate-Reworked */,
+				41E2BB9E2DCD99DE006D67C8 /* FieldMate */,
 			);
 		};
 /* End PBXProject section */
@@ -317,7 +317,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		41E2BB9A2DCD99DE006D67C8 /* Build configuration list for PBXProject "FieldMate-Reworked" */ = {
+		41E2BB9A2DCD99DE006D67C8 /* Build configuration list for PBXProject "FieldMate" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				41E2BBA82DCD99DE006D67C8 /* Debug */,
@@ -326,7 +326,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		41E2BBAA2DCD99DE006D67C8 /* Build configuration list for PBXNativeTarget "FieldMate-Reworked" */ = {
+		41E2BBAA2DCD99DE006D67C8 /* Build configuration list for PBXNativeTarget "FieldMate" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				41E2BBAB2DCD99DE006D67C8 /* Debug */,

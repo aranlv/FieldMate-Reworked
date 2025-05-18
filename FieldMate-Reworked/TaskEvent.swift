@@ -12,14 +12,18 @@ class TaskEvent {
     @Attribute(.unique) var id: UUID
     var title: String
     var location: String
-    var time: String
-    var isActive: Bool
+    var date: Date
     
-    init(id: UUID = UUID(), title: String, location: String, time: String, isActive: Bool) {
+    init(id: UUID = UUID(), title: String, location: String, date: Date) {
         self.id = id
         self.title = title
         self.location = location
-        self.time = time
-        self.isActive = isActive
+        self.date = date
     }
+}
+
+extension TaskEvent {
+    static var modelContainer: ModelContainer = {
+        try! ModelContainer(for: TaskEvent.self)
+    }()
 }

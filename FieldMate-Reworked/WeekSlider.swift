@@ -71,11 +71,14 @@ struct WeekSlider: View {
                                             showMonthYearPicker = false
                                         }
                                     }
+//                                    .border(Color.gray, width: 1)
                                 VStack(alignment: .leading) {
                                     monthYearPicker
                                     Spacer()
                                 }
                             }
+                            .frame(height: 100)
+//                            .border(Color.red, width: 1)
                         }
                     }
                     

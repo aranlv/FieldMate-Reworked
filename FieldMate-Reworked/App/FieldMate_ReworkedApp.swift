@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AppIntents
 
 @main
 struct FieldMate_ReworkedApp: App {
@@ -13,6 +14,7 @@ struct FieldMate_ReworkedApp: App {
         WindowGroup {
             ContentView()
         }
+        .modelContainer(for: TaskEvent.self)
     }
 }
 
