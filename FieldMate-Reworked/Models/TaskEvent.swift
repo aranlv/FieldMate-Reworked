@@ -9,21 +9,15 @@ import Foundation
 
 @Model
 class TaskEvent {
-    @Attribute(.unique) var id: UUID
+    @Attribute(.unique) var id: String
     var title: String
     var location: String
     var date: Date
     
-    init(id: UUID = UUID(), title: String, location: String, date: Date) {
+    init(id: String, title: String, location: String, date: Date) {
         self.id = id
         self.title = title
         self.location = location
         self.date = date
     }
-}
-
-extension TaskEvent {
-    static var modelContainer: ModelContainer = {
-        try! ModelContainer(for: TaskEvent.self)
-    }()
 }

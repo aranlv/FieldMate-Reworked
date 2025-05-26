@@ -10,11 +10,17 @@ import UIKit
 import SwiftData
 
 struct CalendarView: View {
+    @AppStorage("lastSeenLogTime") private var lastSeenLogTime: Date = .distantPast
+    @Query(sort: \ChangeLog.timestamp, order: .reverse) private var logs: [ChangeLog]
     @AppStorage("engineerName") private var engineerName: String = ""
     @Binding var selectedDate: Date
-    @State private var showNotificationView = false
+    @Binding var showNotificationView: Bool
     @State private var showNoNameAlert = false
     @Environment(\.modelContext) private var modelContext
+    
+    private var hasUnreadLogs: Bool {
+            logs.contains { $0.timestamp > lastSeenLogTime }
+        }
     
     var body: some View {
         ZStack {
@@ -38,16 +44,18 @@ struct CalendarView: View {
             VStack(alignment: .trailing, spacing: 0){
                 HStack {
                     Spacer()
-                    NotificationButton {
-                        showNotificationView.toggle()
-                    }
+                    NotificationButton(
+                        action: {
+                            // mark as read when opening
+                            lastSeenLogTime = Date()
+                            showNotificationView.toggle()
+                        },
+                        hasUnread: hasUnreadLogs
+                    )
                     .padding(.trailing, 20)
                     .padding(.top, 75)
                 }
-                if showNotificationView {
-                    NotificationPopover()
-                        .padding(.top, 25)
-                }
+                
                 Spacer()
             }
             .animation(.easeInOut(duration: 0.3), value: showNotificationView)
@@ -85,7 +93,8 @@ struct CalendarView: View {
                     for: engineerName,
                     spreadsheetId: GoogleSheetsConfig.spreadsheetId,
                     sheetName:     GoogleSheetsConfig.sheetName,
-                    apiKey:        GoogleSheetsConfig.apiKey
+                    apiKey:        GoogleSheetsConfig.apiKey,
+                    in: modelContext
                 )
             } catch {
                 print("Import failed:", error)
@@ -126,3 +135,6 @@ struct SyncButton : View{
 }
 
 
+#Preview {
+    ContentView()
+}

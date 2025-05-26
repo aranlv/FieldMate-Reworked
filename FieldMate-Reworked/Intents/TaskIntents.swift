@@ -8,13 +8,18 @@
 import AppIntents
 import SwiftData
 
+// Shared container for AppIntents
+private let sharedModelContainer: ModelContainer = {
+    try! ModelContainer(for: TaskEvent.self, ChangeLog.self)
+}()
+
 struct GetCurrentTask: AppIntent {
     static var title: LocalizedStringResource = "Get Current Task"
     static var description = IntentDescription("Provides complete details of currently scheduled task")
     static var providesDialog: Bool = true
 
     func perform() async throws -> some IntentResult & ProvidesDialog & ShowsSnippetView{
-        let context = ModelContext(TaskEvent.modelContainer)
+        let context = ModelContext(sharedModelContainer)
         let calendar = Calendar.current
         let now = Date()
 

@@ -21,7 +21,7 @@ struct DayTasks: View {
             .sorted { $0.date < $1.date }
     }
     
-    var activeTaskID: UUID? {
+    var activeTaskID: String? {
         let now = Date()
         let tasksToday = taskList.filter {
             Calendar.current.isDate($0.date, inSameDayAs: selectedDate)

@@ -14,7 +14,7 @@ struct FieldMate_ReworkedApp: App {
         WindowGroup {
             ContentView()
         }
-        .modelContainer(for: TaskEvent.self)
+        .modelContainer(for: [TaskEvent.self, ChangeLog.self])
     }
 }
 
