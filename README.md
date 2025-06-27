@@ -80,6 +80,8 @@ Google Sheets       URLSession        TaskImporter         SwiftData DB         
 - **Notifications**: Tap the bell icon to see the popover.  
 - **Siri Shortcut**: “Hey Siri, show my tasks in FieldMate-Reworked.”
 
+![Result Preview](result.png)
+
 ---
 
 ## 📝 Future Roadmap
